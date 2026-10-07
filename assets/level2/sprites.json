@@ -1,0 +1,70 @@
+{
+  "cart": [
+    "cart-0.png",
+    "cart-1.png",
+    "cart-2.png",
+    "cart-3.png",
+    "cart-4.png",
+    "cart-5.png",
+    "cart-6.png",
+    "cart-7.png"
+  ],
+  "cheese": [
+    "cheese-0.png",
+    "cheese-1.png",
+    "cheese-2.png",
+    "cheese-3.png",
+    "cheese-4.png",
+    "cheese-5.png"
+  ],
+  "yogurt": [
+    "yogurt-0.png",
+    "yogurt-1.png",
+    "yogurt-2.png",
+    "yogurt-3.png",
+    "yogurt-4.png",
+    "yogurt-5.png",
+    "yogurt-6.png",
+    "yogurt-7.png"
+  ],
+  "mold": [
+    "mold-0.png",
+    "mold-1.png",
+    "mold-2.png",
+    "mold-3.png",
+    "mold-4.png",
+    "mold-5.png",
+    "mold-6.png",
+    "mold-7.png"
+  ],
+  "yogurtAttack": [
+    "yogurtAttack-0.png",
+    "yogurtAttack-1.png",
+    "yogurtAttack-2.png",
+    "yogurtAttack-3.png",
+    "yogurtAttack-4.png",
+    "yogurtAttack-5.png",
+    "yogurtAttack-6.png"
+  ],
+  "moldAttack": [
+    "moldAttack-0.png",
+    "moldAttack-1.png",
+    "moldAttack-2.png",
+    "moldAttack-3.png",
+    "moldAttack-4.png",
+    "moldAttack-5.png"
+  ],
+  "cheeseAttack": [
+    "cheeseAttack-0.png",
+    "cheeseAttack-1.png",
+    "cheeseAttack-2.png",
+    "cheeseAttack-3.png",
+    "cheeseAttack-4.png",
+    "cheeseAttack-5.png"
+  ],
+  "register": [
+    "register-0.png",
+    "register-1.png",
+    "register-2.png"
+  ]
+}
