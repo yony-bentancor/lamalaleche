@@ -1,0 +1,13 @@
+# Archivos que NO se publican en el sitio
+.git
+.github
+node_modules
+tests
+tools
+server.cjs
+INICIAR.bat
+package.json
+package-lock.json
+wrangler.jsonc
+LEEME*.md
+*.py

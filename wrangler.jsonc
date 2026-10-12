@@ -1,0 +1,9 @@
+// Publicación en Cloudflare (Worker "still-hat-f113").
+// Cloudflare toma la carpeta del juego tal cual y la sirve como sitio estático.
+{
+  "name": "still-hat-f113",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./"
+  }
+}
