@@ -101,7 +101,7 @@
     const item = (x, y, kind) => items.push({ id: "i" + items.length, x, y, kind, taken: false });
     const enemy = (kind, x, y, min, max) => {
       const spec = { gull: [62, 40, 10], cloud: [92, 60, 20], drone: [62, 54, 30], balloon: [56, 56, 10], spark: [38, 38, 10] }[kind];
-      enemies.push({ id: "e" + enemies.length, kind, x, y, home: x, homeY: y, min, max, w: spec[0], h: spec[1], hp: spec[2], face: -1, vx: 0, vy: 0, state: "patrol", t: 0, phase: (enemies.length * 1.7) % 6, flash: 0, dead: 0, deadMax: 0, cool: 1.5 });
+      enemies.push({ id: "e" + enemies.length, kind, x, y, home: x, homeY: y, min, max, w: spec[0], h: spec[1], hp: spec[2], face: -1, vx: 0, vy: 0, state: "patrol", t: 0, phase: (enemies.length * 1.7) % 6, flash: 0, dead: 0, deadMax: 0, cool: kind === "drone" ? 2.4 + (enemies.length % 3) * 0.45 : 1.5 });
     };
     // Tres escalones por fondo (425, 330, 235), como en los niveles 2 y 3. El material cambia con el paisaje.
     const KIND = ["roof", "cargo", "cargo", "cloud", "island", "buoy", "stormcloud", "wreck", "deck", "crane", "deck"];
@@ -637,7 +637,7 @@
           e.y = e.homeY + Math.sin(e.phase * 2.6) * 18;
           e.face = Math.sign(dx) || 1;
           if (e.cool <= 0 && Math.abs(dx) < 560 && !p.dead) {
-            e.cool = 2.6;
+            e.cool = 4.2;
             const tx = p.x,
               ty = p.y - 70,
               d = Math.hypot(tx - e.x, ty - e.y) || 1;

@@ -70,10 +70,10 @@
       const spec = {
         rat: [46, 30, 20],
         pigeon: [44, 36, 10],
-        can: [34, 40, 20],
+        can: [44, 76, 20],
         lantern: [44, 48, 20],
-        dog: [96, 70, 999],
-        barista: [70, 160, 999],
+        dog: [132, 84, 999],
+        barista: [100, 156, 999],
         coffee: [34, 38, 10],
       }[kind];
       enemies.push({
@@ -91,7 +91,7 @@
         face: -1,
         vx: 0,
         vy: 0,
-        state: kind === "rat" ? "hidden" : kind === "dog" ? "sleep" : kind === "pigeon" ? "perch" : "patrol",
+        state: kind === "rat" ? "hidden" : kind === "pigeon" ? "perch" : "patrol",
         t: 0,
         phase: Math.random() * 3,
         flash: 0,
@@ -360,7 +360,7 @@
       if (e.hp <= 0) return false;
       if (e.kind === "dog") {
         // Al perro no se lo lastima: el ruido lo despierta.
-        if (e.state === "sleep") this.wakeDog(e);
+        if (e.state !== "chase") this.wakeDog(e);
         return false;
       }
       if (e.kind === "barista") {
@@ -567,8 +567,12 @@
             }
           }
         } else if (e.kind === "dog") {
-          // Duerme. Si corrés o disparás cerca, despierta y persigue un rato.
-          if (e.state === "sleep") {
+          // V11.1: patrulla visible; correr/disparar cerca activa la persecución.
+          if (e.state === "sleep") e.state = "patrol"; // compatible con partidas anteriores
+          if (e.state === "patrol") {
+            e.x += e.face * 65 * dt;
+            if (e.x <= e.min) { e.x = e.min; e.face = 1; }
+            if (e.x >= e.max) { e.x = e.max; e.face = -1; }
             if ((Math.abs(p.vx) > 300 || this.shot > 0.2) && Math.abs(dx) < 360) this.wakeDog(e);
           } else if (e.state === "chase") {
             e.face = Math.sign(dx) || 1;
@@ -581,7 +585,8 @@
             e.face = Math.sign(e.home - e.x) || 1;
             e.x += e.face * 90 * dt;
             if (Math.abs(e.x - e.home) < 6) {
-              e.state = "sleep";
+              e.state = "patrol";
+              e.t = 0;
               e.x = e.home;
             }
           }

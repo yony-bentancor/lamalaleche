@@ -131,7 +131,7 @@
     group: "Enemigos",
     size: [42, 42],
     fps: 10,
-    hint: "Rueda hacia la botella cuando la ve. Corta la leche: resta 15.",
+    hint: "Camina y acelera hacia la botella cuando la ve. Corta la leche: resta 15.",
     draw(g, t, o) {
       const r = o.w / 2;
       g.save();
@@ -1400,7 +1400,7 @@
     group: "Enemigos nivel 3",
     size: [96, 70],
     fps: 12,
-    hint: "Duerme. Si corrés o disparás cerca, se despierta y te persigue un rato. No se lo lastima: pasá caminando.",
+    hint: "Camina por la feria. Si corrés o disparás cerca, te persigue un rato y luego vuelve a patrullar. No se lo lastima.",
     draw(g, t, o) {
       const sleep = o.state === "sleep",
         run = o.state === "chase",
@@ -2123,6 +2123,12 @@
     },
   };
   /* ---------------- Imágenes personalizadas ---------------- */
+  // V11: escala relativa a la botella (142 px).
+  D.limon.size = [68, 100];
+  D.lata.size = [44, 76];
+  D.perro.size = [132, 84];
+  D.barista.size = [116, 164];
+  D.nubarron.size = [140, 145];
   const custom = {};
   let ready = false;
   function loadImage(src) {
@@ -2172,7 +2178,11 @@
     if (opts.face === 1 || opts.face === -1) g.scale(opts.flip === false ? 1 : -opts.face * -1, 1);
     const frames = custom[key];
     if (frames) {
-      const im = frames[Math.floor(t * (d.fps || 8)) % frames.length];
+      let frameIndex = Math.floor(t * (d.fps || 8)) % frames.length;
+      if (key === "perro" && opts.state === "sleep") frameIndex = 0;
+      // Nube: cuerpo a altura fija; destellos acompañan la descarga existente.
+      if (key === "nubarron") frameIndex = opts.attack ? 2 + Math.floor(t * 10) % 5 : [0, 1, 7][Math.floor(t * 5) % 3];
+      const im = frames[frameIndex];
       let sx = 1,
         sy = 1;
       if (opts.squash) sy = 0.35;

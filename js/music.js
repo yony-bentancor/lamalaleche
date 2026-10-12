@@ -226,6 +226,52 @@
       lead: "square",
       bright: 4300,
     },
+    // V12 · Nivel 5: bajo el agua (pad lento y apagado), el abismo y el Tragabarcos.
+    level5: {
+      bpm: 84,
+      swing: 0.08,
+      chords: [
+        [38, 57, 62, 65, 69],
+        [34, 57, 62, 65, 70],
+        [36, 55, 60, 64, 67],
+        [33, 57, 61, 64, 69],
+      ],
+      melody: [74, null, null, 77, 76, null, 74, null, 69, null, null, null, 72, null, 74, null, 77, null, 79, null, 81, null, 79, 77, 76, null, null, 72, 74, null, null, null],
+      comp: "pad",
+      drums: "soft",
+      lead: "sine",
+      bright: 1500,
+    },
+    abyss5: {
+      bpm: 70,
+      swing: 0,
+      chords: [
+        [33, 52, 55, 60],
+        [32, 52, 56, 59],
+        [31, 50, 55, 58],
+        [32, 51, 56, 59],
+      ],
+      melody: [64, null, null, null, 63, null, null, null, 60, null, null, null, null, null, null, null, 64, null, 67, null, 66, null, null, null, 63, null, null, null, null, null, null, null],
+      comp: "pad",
+      drums: "heart",
+      lead: "sine",
+      bright: 800,
+    },
+    boss5: {
+      bpm: 138,
+      swing: 0,
+      chords: [
+        [26, 50, 53, 57],
+        [29, 53, 56, 60],
+        [24, 48, 52, 55],
+        [25, 49, 52, 56],
+      ],
+      melody: [74, null, 77, 74, 81, null, 80, 77, 74, null, 72, null, 69, null, 72, 73, 74, null, 77, 79, 81, null, 84, 82, 81, 79, 77, null, 76, null, 73, null],
+      comp: "stab",
+      drums: "drive",
+      lead: "triangle",
+      bright: 2600,
+    },
     // V9 · Nivel 3: noche de ciudad (neo-soul con swing), persecución del gato y la Vaca Mecánica.
     level3: {
       bpm: 92,

@@ -1,10 +1,10 @@
 {
   "name": "la-mala-leche-new",
-  "version": "10.0.0",
+  "version": "13.0.0",
   "private": true,
-  "description": "La Mala Leche · V10 · Nivel 4 Por las nubes",
+  "description": "La Mala Leche V13 \u00b7 Men\u00fa adaptable, joystick y final",
   "scripts": {
     "start": "node server.cjs",
-    "test": "node tests/physics.test.cjs && node tests/adventure.test.cjs && node tests/v3.test.cjs && node tests/v4.test.cjs && node tests/audit.test.cjs && node tests/v5.test.cjs && node tests/level2.test.cjs && node tests/premium.test.cjs && node tests/endings.test.cjs && node tests/level3.test.cjs && node tests/revision.test.cjs && node tests/level4.test.cjs"
+    "test": "node tests/physics.test.cjs && node tests/adventure.test.cjs && node tests/v3.test.cjs && node tests/v4.test.cjs && node tests/audit.test.cjs && node tests/v5.test.cjs && node tests/level2.test.cjs && node tests/premium.test.cjs && node tests/endings.test.cjs && node tests/level3.test.cjs && node tests/revision.test.cjs && node tests/level4.test.cjs && node tests/v11_1.test.cjs && node tests/level5.test.cjs && node tests/v12_3.test.cjs && node tests/v12_4.test.cjs"
   }
 }

@@ -1,0 +1,29 @@
+/* The shade belongs to the scroll container, never a viewport-sized child. */
+#home{background:linear-gradient(90deg,rgba(5,22,36,.97),rgba(5,22,36,.9) 45%,rgba(5,22,36,.35));overflow-y:auto;overflow-x:hidden}
+#home .home-shade{display:none}
+#home .home-content{width:65%;max-width:1050px;padding:28px 30px 24px 6vw;min-height:100%}
+#home h1{font-size:clamp(58px,7vw,100px);margin:26px 0 0}
+#home .tagline{margin:16px 0 6px}
+#home .menu{max-width:680px;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 18px;margin-top:18px}
+#home .menu button{min-height:44px;padding:12px;font-size:13px;text-align:left;gap:10px}
+#home .menu .primary{grid-column:1/-1;min-height:52px}
+#home .hero{left:68%;width:28%;top:12%;height:65%;pointer-events:none}
+#home .edition{flex-wrap:wrap;line-height:1.6}
+#home .edition span{margin-left:0}
+#home .home-foot{margin-top:18px;padding-top:10px;flex-wrap:wrap;gap:10px}
+.pad-status{font-size:12px;color:#b9dfef;line-height:1.5;margin:14px 0 0}
+.pad-focus{outline:3px solid #86d9ff!important;outline-offset:2px;background-color:#174257!important;color:#fff!important}
+@media(max-width:700px){#home .home-content{width:100%;padding:24px 7vw}#home .hero{display:none}#home .menu{max-width:none}#home h1{font-size:70px}#home .home-stats{flex-wrap:wrap}}
+@media(max-width:420px){#home .menu{grid-template-columns:1fr}#home .menu button{min-height:46px}}
+#milkEnding{position:fixed;inset:0;z-index:1000;overflow:auto;background:#091925;color:#fff3d4;display:flex;align-items:center;justify-content:center;padding:30px;font-family:Arial,sans-serif}
+#milkEnding .ending-bg{position:absolute;inset:0;background:linear-gradient(90deg,#091925ed,#09192544),url('assets/backgrounds/03.webp') center/cover;opacity:.8}
+#milkEnding .ending-content{position:relative;max-width:780px;width:100%;padding:28px;background:#071a26c9;border:1px solid #fff3d433;border-radius:18px}
+#milkEnding h2{font-size:clamp(30px,5vw,64px);line-height:1.05;margin:18px 0}
+#milkEnding p{font-size:clamp(16px,2vw,22px);line-height:1.6;max-width:580px}
+#milkEnding .ending-bottle{height:150px;float:right;margin:0 0 15px 20px;animation:homecoming 3s ease-in-out infinite}
+#milkEnding button{padding:14px 20px;margin:8px 10px 0 0;border-radius:8px;background:#fff3d4;color:#091925;min-height:48px}
+#milkEnding small{display:block;color:#b9dfef;letter-spacing:2px;margin-bottom:16px}
+#milkEnding .ending-stars{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+#milkEnding .ending-stars i{position:absolute;width:5px;height:5px;background:#ffe6a2;border-radius:50%;animation:homecoming 2.5s ease-in-out infinite alternate}
+@keyframes homecoming{50%{transform:translateY(-12px);opacity:.6}}
+@media(prefers-reduced-motion:reduce){#milkEnding *{animation:none!important}}

@@ -417,7 +417,7 @@
         squash: e.squash,
         state: e.state,
         alpha,
-        rot: e.type === "limon" && e.state === "roll" ? e.x / 21 : 0,
+        rot: 0, // El limón usa sus fotogramas de caminata, sin girar.
       });
       g.restore();
       if (e.type === "robot" && !e.dead && e.hp < 60) {

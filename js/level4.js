@@ -75,13 +75,15 @@
     t.drawImage(img, 0, row, img.width, img.height - row, 0, FLOOR, W, H - FLOOR);
     const ground = document.createElement("canvas");
     ground.width = W;
-    ground.height = H - FLOOR + 40;
+    ground.height = 196;
     const gg = ground.getContext("2d");
-    gg.drawImage(tile, 0, -FLOOR + 40);
+    gg.drawImage(tile, 0, -FLOOR + 96);
     gg.globalCompositeOperation = "destination-in";
-    let f = gg.createLinearGradient(0, 0, 0, 60);
+    let f = gg.createLinearGradient(0, 0, 0, ground.height);
     f.addColorStop(0, "transparent");
-    f.addColorStop(1, "black");
+    f.addColorStop(0.22, "black");
+    f.addColorStop(0.85, "black");
+    f.addColorStop(1, "transparent");
     gg.fillStyle = f;
     gg.fillRect(0, 0, W, ground.height);
     if (!first) {
@@ -116,7 +118,7 @@
     if (assets) return Promise.resolve(assets);
     if (loading) return loading;
     loading = (async () => {
-      const a = { bg: [], art: {}, tiles: [], ground: [], sky: [], deep: [] };
+      const a = { bg: [], art: {}, tiles: [], ground: [], sky: [], deep: [], abyss: [] };
       let count = 0;
       const total = 13 + Object.values(MilkLevel4Assets).reduce((s, v) => s + v.length, 0);
       const im = (src) =>
@@ -138,6 +140,7 @@
       for (let i = 0; i < 13; i++) {
         const r = makeTile(a.bg[i], FLOORS[i], i === 0);
         a.tiles.push(r.tile);
+        a.abyss.push(MilkGapBackdrop.build(r.tile, i, W, H, FLOOR));
         a.ground.push(r.ground);
         a.sky.push(r.sky);
         a.deep.push(r.deep);
@@ -727,7 +730,8 @@
     mode = "complete";
     clear();
     $("l4overlay").hidden = false;
-    $("l4overlay").innerHTML = `<div class="l4panel l4final" role="dialog" aria-modal="true" aria-labelledby="l4winTitle"><span class="l4eyebrow">NIVEL 4 COMPLETO · CONTINUARÁ</span><h2 id="l4winTitle">La granja<br>a la vista<span>.</span></h2><p>La tormenta se abrió y el sol volvió a salir.<br>Con el paraguas abierto, la botella baja planeando.</p><p>Allá abajo la espera Granja La Esperanza.</p><div class="l4results"><span>PUNTAJE <b>${model.score}</b></span><span>MONEDAS <b>${model.coins}</b></span><span>CAÍDAS <b>${model.falls}</b></span></div><p class="l4muted">Tu victoria está guardada. Próximo: Nivel 5 · La granja.</p><button class="l4primary" id="l4winHome">VOLVER AL INICIO →</button><button id="l4again">Jugar el nivel 4 otra vez</button></div>`;
+    $("l4overlay").innerHTML = `<div class="l4panel l4final" role="dialog" aria-modal="true" aria-labelledby="l4winTitle"><span class="l4eyebrow">NIVEL 4 COMPLETO · EL VIAJE CONTINÚA</span><h2 id="l4winTitle">La granja<br>a la vista<span>.</span></h2><p>La tormenta se abrió y el sol volvió a salir.<br>Con el paraguas abierto, la botella baja planeando.</p><p>Una ráfaga la desvía hacia el agua, antes de alcanzar la granja.</p><div class="l4results"><span>PUNTAJE <b>${model.score}</b></span><span>MONEDAS <b>${model.coins}</b></span><span>CAÍDAS <b>${model.falls}</b></span></div><p class="l4muted">Tu victoria está guardada. Próximo: Nivel 5 · Bajo la superficie.</p><button class="l4primary" id="l4next">ENTRAR AL NIVEL 5 →</button><button id="l4winHome">Volver al inicio</button><button id="l4again">Jugar el nivel 4 otra vez</button></div>`;
+    $("l4next").onclick = () => { const score = model.score; stop(); window.MilkLevel5.start({score}); };
     $("l4winHome").onclick = stop;
     $("l4again").onclick = () => {
       model = new C.Level4();
@@ -737,7 +741,7 @@
       $("l4overlay").hidden = true;
       canvas.focus();
     };
-    $("l4winHome").focus();
+    $("l4next").focus();
     window.dispatchEvent(new CustomEvent("milk:level-transition", { detail: { from: 4, to: 5, score: model.score, hp: model.hp } }));
   }
   /* ---------- Bucle ---------- */
@@ -943,42 +947,35 @@
       k = clearK();
     for (let i = first; i <= end; i++) {
       const tx = (i * STRIDE - bx) * 0.9;
-      g.drawImage(assets.tiles[i], tx, -cy * 0.25);
+      g.drawImage(assets.abyss[i], tx, -cy * 0.25);
       if (cy < 0) g.drawImage(assets.tiles[i], 0, 0, W, 1, tx, 0, W, -cy * 0.25 + 1);
       if (i === 11 && k > 0) {
         g.globalAlpha = k;
-        g.drawImage(assets.tiles[12], tx, -cy * 0.25);
+        g.drawImage(assets.abyss[12], tx, -cy * 0.25);
         g.globalAlpha = 1;
       }
     }
     MilkLevel4Sky.draw(g, { t: model.time, fx: fx() && weatherOn(), wind: model.wind, boss: model.boss, won: model.won, clear: k, tiles: assets.tiles, floors: FLOORS, bgCamX: bx, camY: cy }, first, end);
+    // El paisaje profundo es continuo; solo el suelo se recorta en los huecos.
+    g.save();
+    g.beginPath();
+    g.rect(-W, -H, W * 3, H * 3);
+    for (const gap of GAPS) g.rect(gap.x - bx, -H, gap.w, H * 3);
+    g.clip("evenodd");
     for (let i = first; i <= end; i++) {
-      g.drawImage(assets.ground[i], i * STRIDE - bx, FLOOR - 40 - cy);
+      g.drawImage(assets.ground[i], i * STRIDE - bx, FLOOR - 96 - cy);
       if (i === 11 && k > 0) {
         g.globalAlpha = k;
-        g.drawImage(assets.ground[12], i * STRIDE - bx, FLOOR - 40 - cy);
+        g.drawImage(assets.ground[12], i * STRIDE - bx, FLOOR - 96 - cy);
         g.globalAlpha = 1;
       }
     }
+    g.restore();
   }
-  /* Huecos: dentro se ve el cielo que hay detrás (se copia del propio fondo, más arriba),
-     con sombra en el borde, caras laterales del piso y nubes que pasan por debajo. */
+  /* V11.1: profundidad continua; nunca repetir un recorte de ciudad desplazado.
+     Los fondos de abismo conservan la posición horizontal del paisaje y se
+     funden por arriba con la escena original. */
   const GAP_TOP = [8, 80, 80, 10, 10, 10, 10, 44, 10, 8, 8, 8];
-  function skyCopy(x, yTop, w, h, shift) {
-    const bx = Math.min(camera.x, CAM_MAX),
-      cy = camera.y;
-    const sx0 = x - camera.x,
-      sy0 = yTop - camera.y;
-    const first = Math.max(0, Math.floor(bx / STRIDE) - 1),
-      end = Math.min(11, Math.floor((bx + W) / STRIDE) + 1);
-    for (let i = first; i <= end; i++) {
-      const tx = (i * STRIDE - bx) * 0.9;
-      const lo = Math.max(sx0, tx),
-        hi = Math.min(sx0 + w, tx + W);
-      if (hi <= lo) continue;
-      g.drawImage(assets.tiles[i], lo - tx, sy0 + cy * 0.25 - shift, hi - lo, h, x + (lo - sx0), yTop, hi - lo, h);
-    }
-  }
   function gaps() {
     for (const gp of GAPS) {
       if (!visible(gp.x, gp.w)) continue;
@@ -992,26 +989,7 @@
       g.beginPath();
       g.rect(x, top, w, bottom - top);
       g.clip();
-      g.fillStyle = assets.sky[tile];
-      g.fillRect(x, top, w, bottom - top);
-      skyCopy(x, top, w, bottom - top, 250);
-      // Profundidad: oscuro bajo el borde, bruma abajo.
-      let gr = g.createLinearGradient(0, FLOOR - 4, 0, FLOOR + 70);
-      gr.addColorStop(0, "rgba(10,12,30,.55)");
-      gr.addColorStop(1, "rgba(10,12,30,0)");
-      g.fillStyle = gr;
-      g.fillRect(x, FLOOR - 4, w, 74);
-      gr = g.createLinearGradient(0, FLOOR + 60, 0, bottom);
-      gr.addColorStop(0, "rgba(255,255,255,0)");
-      gr.addColorStop(1, "rgba(255,255,255,.22)");
-      g.fillStyle = gr;
-      g.fillRect(x, FLOOR + 60, w, bottom - FLOOR - 60);
-      // Nubes que pasan por debajo.
-      for (let i = 0; i < 5; i++) {
-        const cx = x + (((i * 97 + t * (14 + i * 6)) % (w + 200)) - 100),
-          cyy = FLOOR + 80 + i * 30;
-        ellipse(cx, cyy, 70 - i * 6, 13 - i, `rgba(255,255,255,${0.42 - i * 0.05})`);
-      }
+      // El abismo ya está dibujado detrás del suelo, sin pegar recortes.
       const up = UPDRAFTS.find((u) => Math.abs(u.x - x) < 5);
       if (up && up.kind === "fan") {
         const fx0 = x + w / 2,
@@ -1322,7 +1300,7 @@
   function enemy(e) {
     if ((e.hp <= 0 && e.dead <= 0) || !visible(e.x, 120)) return;
     const key = ENEMY_DESIGN[e.kind],
-      bottom = e.kind === "spark" ? e.y : e.y + e.h / 2;
+      bottom = e.kind === "cloud" ? e.y + 104 : e.kind === "spark" ? e.y : e.y + e.h / 2;
     if (e.hp <= 0) {
       const k = 1 - e.dead / (e.deadMax || 1);
       g.save();
@@ -1338,7 +1316,7 @@
     if (e.kind === "spark" || e.y > FLOOR - 200) ellipse(e.x, FLOOR + 2, e.w * 0.4, 5, "rgba(4,4,16,.25)");
     g.save();
     if (e.flash > 0) g.filter = "brightness(1.9)";
-    MilkDesigns.draw(g, key, model.time + e.phase, e.x, bottom, { face: e.face, state: e.state });
+    MilkDesigns.draw(g, key, model.time + e.phase, e.x, bottom, { face: e.face, state: e.state, attack: e.kind === "cloud" && e.cool > 1.15 });
     g.restore();
     if (e.kind === "drone" && e.cool < 0.5 && fx()) lighter(() => glow(e.x + e.face * 26, e.y, 24, "rgba(80,240,255,.7)"));
     if (e.kind === "spark" && fx()) lighter(() => glow(e.x, e.y - 18, 60, "rgba(160,200,255,.3)"));

@@ -1,7 +1,2 @@
-/* Lista de imágenes propias, solo necesaria si abrís index.html con doble clic (sin npm start).
-   Con npm start el juego detecta solo los archivos de esta carpeta.
-   Formato: nombre: cantidad de cuadros. Ejemplo, si guardaste bacteria-0.png, bacteria-1.png y bacteria-2.png:
-     bacteria: 3,
-*/
-window.MILK_CUSTOM = {
-};
+/* V11: fotogramas alineados de las cinco láminas originales. */
+window.MILK_CUSTOM = {"limon": 8, "perro": 8, "barista": 12, "lata": 8, "nubarron": 8};

@@ -14,7 +14,7 @@
   const POWER_TIME = { cacao: 20, frutilla: 12, uht: 9 };
   const ENEMY_SPEC = {
     bacteria: { w: 46, h: 40, hp: 20, speed: 48, contact: 10, points: 100 },
-    limon: { w: 42, h: 42, hp: 30, speed: 250, contact: 15, points: 200 },
+    limon: { w: 68, h: 100, hp: 30, speed: 250, contact: 15, points: 200 },
     mosca: { w: 38, h: 30, hp: 10, speed: 0, contact: 5, points: 200 },
     raton: { w: 60, h: 34, hp: 20, speed: 190, contact: 10, points: 200 },
     robot: { w: 60, h: 135, hp: 60, speed: 70, contact: 20, points: 1000 },
@@ -800,25 +800,20 @@
             e.face = -1;
           }
         } else if (e.type === "limon") {
+          // Camina apoyado en el piso; acelera al detectar a la botella.
+          if (e.state === "roll") e.state = "walk";
           if (e.state === "patrol" && Math.abs(dx) < 480 && Math.abs(p.y - FLOOR) < 160) {
-            e.state = "roll";
+            e.state = "walk";
             e.face = dx < 0 ? -1 : 1;
-            e.vy = -260;
             this.emit("lemon", e.x, e.y - 30);
           }
-          if (e.state === "roll") {
-            e.x += e.face * spec.speed * dt;
-            e.vy += 1400 * dt;
-            e.y += e.vy * dt;
-            if (e.y >= FLOOR) {
-              e.y = FLOOR;
-              e.vy = -170;
-            }
-            if (e.x < e.min || e.x > e.max) {
-              e.x = Math.max(e.min, Math.min(e.max, e.x));
-              e.face *= -1;
-            }
-          } else e.y = FLOOR;
+          e.x += e.face * (e.state === "walk" ? spec.speed : 85) * dt;
+          e.y = FLOOR;
+          e.vy = 0;
+          if (e.x < e.min || e.x > e.max) {
+            e.x = Math.max(e.min, Math.min(e.max, e.x));
+            e.face *= -1;
+          }
         } else if (e.type === "mosca") {
           e.x = e.home + Math.sin(e.t * 1.3) * ((e.max - e.min) / 2);
           e.y = e.ay + Math.sin(e.t * 3.1) * 28 + e.h;

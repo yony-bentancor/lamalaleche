@@ -209,7 +209,7 @@
   function hideModals() {
     ["home", "routes", "settings", "paused", "finish", "catalog"].forEach((id) => $(id).classList.add("hidden"));
   }
-  const EXTERNAL_LEVEL = /^level[234]$/;
+  const EXTERNAL_LEVEL = /^level[2345]$/;
   function syncHUD() {
     const playing = mode === "playing" || mode === "paused" || mode === "finish";
     $("hud").classList.toggle("hidden", !playing);
@@ -237,6 +237,7 @@
       $("continueLevel2").classList.toggle("hidden", !localStorage.getItem("milk-v7-level2"));
       $("continueLevel3").classList.toggle("hidden", !localStorage.getItem("milk-v9-level3"));
       $("continueLevel4").classList.toggle("hidden", !localStorage.getItem("milk-v10-level4"));
+      $("continueLevel5")?.classList.toggle("hidden", !localStorage.getItem("milk-v12-level5"));
     } catch {}
     homeStats();
     cam.x = 0;
@@ -1479,7 +1480,7 @@
         camera: { ...cam },
         zone: currentZone,
         width: world.width,
-        version: "10.0.0",
+        version: "12.4.0",
         cinematic: MilkCinema.state,
         transition: { state: levelFlow.state, fade: levelFlow.fade },
         audio: { sound: settings.sound, ambient: settings.ambient, volume: settings.volume, enabled: ambience?.enabled || false },
@@ -1572,5 +1573,10 @@
   $("continueLevel4").onclick = () => MilkLevel4.start({ resume: true });
   // Al terminar el nivel 3 se puede pasar directo al nivel 4.
   window.addEventListener("milk:play-level4", (e) => MilkLevel4.start({ score: e.detail?.score || 0 }));
+  MilkLevel5.configure(levelBridge("level5"));
+  $("playLevel5").onclick = () => MilkLevel5.start();
+  $("routeLevel5").onclick = () => MilkLevel5.start({ skipIntro: true });
+  $("continueLevel5").onclick = () => MilkLevel5.start({ resume: true });
+  window.addEventListener("milk:play-level5", (e) => MilkLevel5.start(e.detail || {}));
   boot();
 })();

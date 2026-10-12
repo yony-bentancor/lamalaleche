@@ -1326,7 +1326,7 @@
     if ((e.hp <= 0 && e.dead <= 0) || !visible(e.x, 120)) return;
     if (e.kind === "rat" && e.state === "hidden" && e.hp > 0) return;
     const [w, h] = d ? d.size : [e.w, e.h];
-    const scale = e.kind === "barista" ? 1 : 1.25;
+    const scale = ["barista", "dog", "can"].includes(e.kind) ? 1 : 1.25;
     if (e.hp <= 0) {
       const k = 1 - e.dead / (e.deadMax || 1);
       g.save();
